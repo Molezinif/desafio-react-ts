@@ -2,9 +2,9 @@ import React, { createContext, ReactNode, useCallback, useState } from 'react'
 
 /**
  * Utilizar tipagens corretas nas props da interface
-*/
+ */
 export interface GlobalContextProps {
-  isLoading: any
+  isLoading: boolean
   setIsLoading: any
   handleGetUsers: any
 }
@@ -15,9 +15,13 @@ interface GlobalProviderProps {
 
 const defaultValue = {}
 
-const GlobalContext = createContext<GlobalContextProps>({ ...defaultValue } as GlobalContextProps)
+const GlobalContext = createContext<GlobalContextProps>({
+  ...defaultValue,
+} as GlobalContextProps)
 
-const GlobalProvider: React.FC<GlobalProviderProps> = ({ children }: GlobalProviderProps) => {
+const GlobalProvider: React.FC<GlobalProviderProps> = ({
+  children,
+}: GlobalProviderProps) => {
   const [isLoading, setIsLoading] = useState()
 
   const handleGetUsers = useCallback(() => {
@@ -31,8 +35,8 @@ const GlobalProvider: React.FC<GlobalProviderProps> = ({ children }: GlobalProvi
     <GlobalContext.Provider
       value={{
         handleGetUsers,
-        isLoading,
-        setIsLoading
+        isLoading: false,
+        setIsLoading,
       }}
     >
       {children}
