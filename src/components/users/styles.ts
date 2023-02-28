@@ -24,8 +24,7 @@ export const Button = styled.button`
   padding: 0.7em 4em;
   overflow: hidden;
   font-weight: 400;
-  &:hover,
-  &:focus {
+  &:hover {
     background: #1456af;
     border: 2px solid #1456af;
   }

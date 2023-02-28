@@ -1,7 +1,7 @@
 import React from 'react'
-import { Users } from './components'
 import { GlobalProvider } from './context'
 import { Container } from './components/users/styles'
+import { Users } from './components/users'
 
 function App() {
   return (

@@ -4,7 +4,8 @@ import { useGlobalContext } from '../../context'
 import { Button, Container, LoadingContainer, Title } from './styles'
 
 export const Users: React.FC = () => {
-  const { isLoading, handleGetUsers } = useGlobalContext()
+  const { isLoading, handleGetUsers, completed } = useGlobalContext()
+  //const { user, setUser } = useGlobalContext()
 
   if (isLoading) {
     return (
@@ -14,6 +15,13 @@ export const Users: React.FC = () => {
     )
   }
 
+  if (completed) {
+    return (
+      <Container>
+        <div></div>
+      </Container>
+    )
+  }
   /**
    * Criar um IF que exiba o componente referente aos usuários buscados na API
    * Imagens 3, 4 e 5
