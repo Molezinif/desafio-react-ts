@@ -1,18 +1,18 @@
-import { AxiosResponse } from 'axios'
-
 /**
  * Tipar corretamente interfaces
  */
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IUser {
+  id: number
   name: string
   email: string
   phone: string
-  user: string
-  street: string
-  enterprise: string
+  username: string
+  address: {
+    street: string
+  }
+  company: {
+    name: string
+  }
 }
 
-type TFetchUsers = () => any
-
-export type { IUser, TFetchUsers }
+export type { IUser }

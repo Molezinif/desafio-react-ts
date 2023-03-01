@@ -36,3 +36,66 @@ export const LoadingContainer = styled.div`
   justify-content: center;
   align-items: center;
 `
+
+export const UserCardContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  background-color: #fff;
+  border: solid 1px;
+  padding: 16px;
+  margin: 16px;
+  justify-content: space-between;
+
+  @media (max-width: 550px) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  @media (min-width: 551px) and (max-width: 1023px) {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  @media (min-width: 1024px) {
+    flex-direction: row;
+    max-width: 800px;
+  }
+`
+export const UserCardLeft = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-right: 16px;
+  flex-basis: 50%;
+
+  @media (min-width: 551px) and (max-width: 1023px) {
+    margin-bottom: 0;
+    margin-right: 16px;
+    flex-basis: calc(50% - 8px);
+  }
+
+  @media (min-width: 1024px) {
+    margin-bottom: 0;
+    margin-right: 16px;
+    flex-basis: 50%;
+  }
+`
+
+export const UserCardRight = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex-basis: 50%;
+
+  @media (min-width: 551px) and (max-width: 1023px) {
+    flex-basis: calc(50% - 8px);
+  }
+
+  @media (min-width: 1024px) {
+    flex-basis: 50%;
+  }
+`
+
+export const UserCardText = styled.p`
+  margin: 0 0 10px;
+`
