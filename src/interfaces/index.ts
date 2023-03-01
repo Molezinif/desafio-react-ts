@@ -1,6 +1,3 @@
-/**
- * Tipar corretamente interfaces
- */
 interface IUser {
   id: number
   name: string

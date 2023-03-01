@@ -9,10 +9,6 @@ import React, {
 
 import { IUser } from '../interfaces'
 import api from '../services'
-
-/**
- * Utilizar tipagens corretas nas props da interface
- */
 export interface GlobalContextProps {
   user: IUser[]
   setUser?: Dispatch<SetStateAction<IUser>>
@@ -59,10 +55,6 @@ const GlobalProvider: React.FC<GlobalProviderProps> = ({
   const handleGetUsers = useCallback(() => {
     setIsLoading(true)
     handleAPI()
-    /**
-     * Criar tratativa para exibir loading e fazer chamada da função que chama o AXIOS
-     * Salvar resposta do endpoint em um state e utiliza-lo no projeto
-     */
   }, [])
 
   async function handleAPI() {
