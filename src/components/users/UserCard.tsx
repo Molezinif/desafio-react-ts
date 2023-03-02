@@ -24,7 +24,7 @@ export const UserCard: React.FC<UserCardProps> = ({
   company,
 }) => {
   return (
-    <UserCardContainer>
+    <UserCardContainer data-testid="UserCard">
       <UserCardLeft>
         <UserCardText>
           <strong>Nome:</strong> {name}

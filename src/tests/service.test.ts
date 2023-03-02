@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-describe('Teste Axios', () => {
+describe('Axios Test', () => {
   test('deve retornar um objeto com dados do usuário', async () => {
     const userId = 1
     const response = await axios.get(

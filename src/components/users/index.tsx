@@ -36,10 +36,12 @@ export const Users: React.FC = () => {
   return (
     <Container>
       <div>
-        <Title>Nenhum usuário encontrado</Title>
+        <Title data-testid="text">Nenhum usuário encontrado</Title>
       </div>
       <div>
-        <Button onClick={handleGetUsers}>Buscar usuários</Button>
+        <Button role={'button'} onClick={handleGetUsers}>
+          Buscar usuários
+        </Button>
       </div>
     </Container>
   )
