@@ -13,9 +13,9 @@ export interface GlobalContextProps {
   user: IUser[]
   setUser?: Dispatch<SetStateAction<IUser>>
   completed: boolean
-  setCompleted: Dispatch<SetStateAction<boolean>>
+  setCompleted?: Dispatch<SetStateAction<boolean>>
   isLoading: boolean
-  setIsLoading: Dispatch<SetStateAction<boolean>>
+  setIsLoading?: Dispatch<SetStateAction<boolean>>
   handleGetUsers: () => void
 }
 

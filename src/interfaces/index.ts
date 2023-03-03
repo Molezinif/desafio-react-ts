@@ -1,15 +1,31 @@
+import { AxiosResponse } from 'axios'
+
 interface IUser {
   id: number
   name: string
-  email: string
-  phone: string
   username: string
-  address: {
-    street: string
-  }
-  company: {
-    name: string
+  email: string
+  address: IAddress
+  phone: string
+  website: string
+  company: ICompany
+}
+
+interface IAddress {
+  street: string
+  suite: string
+  city: string
+  zipcode: string
+  geo: {
+    lat: string
+    lng: string
   }
 }
 
-export type { IUser }
+interface ICompany {
+  name: string
+  catchPhrase: string
+  bs: string
+}
+
+export type { IUser, IAddress, ICompany }

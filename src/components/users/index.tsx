@@ -17,7 +17,7 @@ export const Users: React.FC = () => {
 
   if (completed) {
     return (
-      <Container>
+      <Container data-testid="users-container">
         <Title>Usuários:</Title>
         {user.map((user) => (
           <UserCard
