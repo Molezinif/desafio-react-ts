@@ -12,11 +12,12 @@ import api from '../services'
 export interface GlobalContextProps {
   user: IUser[]
   setUser?: Dispatch<SetStateAction<IUser>>
-  completed: boolean
-  setCompleted?: Dispatch<SetStateAction<boolean>>
   isLoading: boolean
   setIsLoading?: Dispatch<SetStateAction<boolean>>
   handleGetUsers: () => void
+  modalIsOpen: boolean
+  setModal?: Dispatch<SetStateAction<boolean>>
+  toggleModal: () => void
 }
 
 interface GlobalProviderProps {
@@ -24,21 +25,9 @@ interface GlobalProviderProps {
 }
 
 export const defaultValue = {
-  user: [
-    {
-      id: 0,
-      name: '',
-      email: '',
-      phone: '',
-      username: '',
-      address: {
-        street: '',
-      },
-      company: {
-        name: '',
-      },
-    } as IUser,
-  ],
+  user: [] as IUser[],
+  isLoading: false,
+  modalIsOpen: false,
 }
 
 const GlobalContext = createContext<GlobalContextProps>({
@@ -48,30 +37,31 @@ const GlobalContext = createContext<GlobalContextProps>({
 const GlobalProvider: React.FC<GlobalProviderProps> = ({
   children,
 }: GlobalProviderProps) => {
-  const [isLoading, setIsLoading] = useState<boolean>(false)
-  const [completed, setCompleted] = useState<boolean>(false)
+  const [isLoading, setIsLoading] = useState<boolean>(defaultValue.isLoading)
   const [user, setUser] = useState<IUser[]>(defaultValue.user)
+  const [modalIsOpen, setModal] = useState<boolean>(defaultValue.modalIsOpen)
 
   const handleGetUsers = useCallback(() => {
     setIsLoading(true)
-    handleAPI()
+    handleAPIGetUser()
+    setTimeout(() => {
+      setIsLoading(false)
+    }, 500)
   }, [])
 
-  async function handleAPI() {
+  async function handleAPIGetUser() {
     try {
       const response = await api.get('/users')
       setUser(response.data)
-
-      setTimeout(() => {
-        setIsLoading(false)
-      }, 500)
-
-      setCompleted(true)
-      console.log(response.data)
     } catch (error) {
       console.error('error: ' + error)
     }
   }
+
+  const toggleModal = useCallback(() => {
+    setModal(!modalIsOpen)
+  }, [modalIsOpen])
+
   return (
     <GlobalContext.Provider
       value={{
@@ -79,8 +69,8 @@ const GlobalProvider: React.FC<GlobalProviderProps> = ({
         handleGetUsers: handleGetUsers,
         isLoading: isLoading,
         setIsLoading: setIsLoading,
-        completed: completed,
-        setCompleted: setCompleted,
+        toggleModal: toggleModal,
+        modalIsOpen: modalIsOpen,
       }}
     >
       {children}

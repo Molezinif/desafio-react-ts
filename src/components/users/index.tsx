@@ -1,12 +1,14 @@
 import React from 'react'
 import { ClipLoader } from 'react-spinners'
 import { useGlobalContext } from '../../context'
-import { Button, Container, LoadingContainer, Title } from './styles'
+import Modal from '../Modal/Modal'
+import { CloseButton } from '../Modal/styles'
+import { Button, Container, LoadingContainer, Title, AddButton } from './styles'
 import UserCard from './UserCard'
 
 export const Users: React.FC = () => {
-  const { isLoading, handleGetUsers, completed, user } = useGlobalContext()
-  console.log(user)
+  const { isLoading, handleGetUsers, user, toggleModal, modalIsOpen } =
+    useGlobalContext()
   if (isLoading) {
     return (
       <LoadingContainer data-testid="loading-container">
@@ -15,10 +17,22 @@ export const Users: React.FC = () => {
     )
   }
 
-  if (completed) {
+  if (modalIsOpen) {
+    return (
+      <Modal>
+        <CloseButton>
+          <button onClick={toggleModal}>X</button>
+        </CloseButton>
+        <p>burrao mane</p>
+      </Modal>
+    )
+  }
+
+  if (user.length > 0) {
     return (
       <Container data-testid="users-container">
         <Title>Usuários:</Title>
+        <AddButton onClick={toggleModal}>+</AddButton>
         {user.map((user) => (
           <UserCard
             key={user.email}
@@ -33,6 +47,7 @@ export const Users: React.FC = () => {
       </Container>
     )
   }
+
   return (
     <Container>
       <div>

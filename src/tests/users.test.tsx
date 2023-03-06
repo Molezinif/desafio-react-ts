@@ -24,7 +24,6 @@ test('When Users is set, expect to display users list', () => {
   const mock = {
     ...mockProvider,
     users: usersMock,
-    completed: true,
   }
   render(
     <GlobalContext.Provider value={mock}>

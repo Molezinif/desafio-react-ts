@@ -30,6 +30,22 @@ export const Button = styled.button`
   }
 `
 
+export const AddButton = styled(Button)`
+  background: #1d7cfb;
+  border-radius: 10px;
+  align-self: flex-end;
+  border: 2px solid #1d7cfb;
+  color: white;
+  margin: 0 1em;
+  padding: 0.5em 1.5em;
+  overflow: hidden;
+  font-weight: 400;
+  &:hover {
+    background: #1456af;
+    border: 2px solid #1456af;
+  }
+`
+
 export const LoadingContainer = styled.div`
   display: grid;
   height: 100vh;

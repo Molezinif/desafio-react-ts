@@ -3,6 +3,7 @@ export const mockProvider = {
   handleGetUsers: jest.fn(),
   isLoading: false,
   setIsLoading: jest.fn(),
-  completed: false,
-  setCompleted: jest.fn(),
+  modalIsOpen: false,
+  setModal: jest.fn(),
+  toggleModal: jest.fn(),
 }

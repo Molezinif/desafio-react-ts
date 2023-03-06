@@ -1,5 +1,3 @@
-import { AxiosResponse } from 'axios'
-
 interface IUser {
   id: number
   name: string
