@@ -23,8 +23,11 @@ export const UserCard: React.FC<UserCardProps> = ({
   street,
   company,
 }) => {
+  const handleOnClick = () => {
+    console.log('click')
+  }
   return (
-    <UserCardContainer data-testid="UserCard">
+    <UserCardContainer data-testid="UserCard" onClick={handleOnClick}>
       <UserCardLeft>
         <UserCardText>
           <strong>Nome:</strong> {name}

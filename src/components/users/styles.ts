@@ -38,16 +38,19 @@ export const LoadingContainer = styled.div`
 `
 
 export const UserCardContainer = styled.div`
+  user-select: none;
   display: flex;
   flex-direction: row;
   align-items: center;
   width: 100%;
   background-color: #fff;
-  border: solid 1px;
+  box-shadow: rgba(0, 0, 0, 0.08) 0px 4px 12px;
   padding: 16px;
   margin: 16px;
   justify-content: space-between;
-
+  &:hover {
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 4px 12px;
+  }
   @media (max-width: 550px) {
     flex-direction: column;
     align-items: flex-start;
