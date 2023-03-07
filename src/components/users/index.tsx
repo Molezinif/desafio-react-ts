@@ -1,9 +1,16 @@
 import React from 'react'
 import { ClipLoader } from 'react-spinners'
 import { useGlobalContext } from '../../context'
+import { Form } from '../Form/Form'
 import Modal from '../Modal/Modal'
 import { CloseButton } from '../Modal/styles'
-import { Button, Container, LoadingContainer, Title, AddButton } from './styles'
+import {
+  Button,
+  Container,
+  LoadingContainer,
+  Title,
+  AddCardContainer,
+} from './styles'
 import UserCard from './UserCard'
 
 export const Users: React.FC = () => {
@@ -17,22 +24,37 @@ export const Users: React.FC = () => {
     )
   }
 
-  if (modalIsOpen) {
-    return (
-      <Modal>
-        <CloseButton>
-          <button onClick={toggleModal}>X</button>
-        </CloseButton>
-        <p>burrao mane</p>
-      </Modal>
-    )
-  }
-
   if (user.length > 0) {
-    return (
+    return modalIsOpen ? (
+      <>
+        <Container data-testid="users-container">
+          <Title>Usuários:</Title>
+          <AddCardContainer onClick={toggleModal}>
+            + Adicionar um novo usuário
+          </AddCardContainer>
+          {user.map((user) => (
+            <UserCard
+              key={user.email}
+              name={user.name}
+              email={user.email}
+              phone={user.phone}
+              username={user.username}
+              street={user.address.street}
+              company={user.company.name}
+            />
+          ))}
+        </Container>
+        <Modal>
+          <CloseButton onClick={toggleModal}>X</CloseButton>
+          <Form />
+        </Modal>
+      </>
+    ) : (
       <Container data-testid="users-container">
         <Title>Usuários:</Title>
-        <AddButton onClick={toggleModal}>+</AddButton>
+        <AddCardContainer onClick={toggleModal}>
+          + Adicionar um novo usuário
+        </AddCardContainer>
         {user.map((user) => (
           <UserCard
             key={user.email}

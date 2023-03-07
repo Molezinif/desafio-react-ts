@@ -1,5 +1,6 @@
 import React from 'react'
 import {
+  Options,
   UserCardContainer,
   UserCardLeft,
   UserCardRight,
@@ -13,6 +14,7 @@ interface UserCardProps {
   username: string
   street: string
   company: string
+  children?: React.ReactNode
 }
 
 export const UserCard: React.FC<UserCardProps> = ({
@@ -22,12 +24,14 @@ export const UserCard: React.FC<UserCardProps> = ({
   username,
   street,
   company,
+  children,
 }) => {
   const handleOnClick = () => {
     console.log('click')
   }
   return (
     <UserCardContainer data-testid="UserCard" onClick={handleOnClick}>
+      <Options>{children}</Options>
       <UserCardLeft>
         <UserCardText>
           <strong>Nome:</strong> {name}

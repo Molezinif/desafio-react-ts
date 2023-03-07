@@ -5,16 +5,16 @@ interface IUser {
   email: string
   address: IAddress
   phone: string
-  website: string
+  website?: string
   company: ICompany
 }
 
 interface IAddress {
   street: string
-  suite: string
-  city: string
-  zipcode: string
-  geo: {
+  suite?: string
+  city?: string
+  zipcode?: string
+  geo?: {
     lat: string
     lng: string
   }
@@ -22,8 +22,8 @@ interface IAddress {
 
 interface ICompany {
   name: string
-  catchPhrase: string
-  bs: string
+  catchPhrase?: string
+  bs?: string
 }
 
 export type { IUser, IAddress, ICompany }
