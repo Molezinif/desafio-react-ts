@@ -2,42 +2,26 @@ import axios from 'axios'
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import { useGlobalContext } from '../../context'
-import { IAddress, ICompany, IUser } from '../../interfaces'
+import { IUser } from '../../interfaces'
 import { ButtonSubmit, StyledForm, StyledInput, StyledLabel } from './styles'
 
-interface IForm {
-  name: string
-  email: string
-  phone: string
-  username: string
-  address: IAddress
-  company: ICompany
-}
 
 export const Form: React.FC = () => {
-  const { register, handleSubmit, reset } = useForm<IForm>()
+  const { register, handleSubmit, reset } = useForm<IUser>()
   const { setUser, user } = useGlobalContext()
 
-  const onsubmit = (data: IForm) => {
-    const newUser: IUser = {
-      id: user.length + 1,
-      name: data.name,
-      email: data.email,
-      phone: data.phone,
-      username: data.username,
-      address: {
-        street: data.address.street,
-      },
-      company: {
-        name: data.company.name,
-      },
-    }
+  const onsubmit = (data: IUser) => {
     axios
-      .post(`https://jsonplaceholder.typicode.com/users/${newUser.id}`, newUser)
-      .then((response) => {
-        console.log(response)
-        reset()
-      })
+      .post('https://jsonplaceholder.typicode.com/users', data)
+      .then((res) => console.log(res))
+      .catch((err) => console.error(err))
+    reset()
+    if(user !== undefined && setUser){
+      setUser([...user, data])
+    }
+    //setUser([...user, data])
+    //Cannot invoke an object which is possibly 'undefined'.
+    console.log('data: '+ JSON.stringify(data))
   }
 
   return (

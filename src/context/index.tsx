@@ -11,7 +11,7 @@ import { IUser } from '../interfaces'
 import api from '../services'
 export interface GlobalContextProps {
   user: IUser[]
-  setUser?: Dispatch<SetStateAction<IUser>>
+  setUser?: Dispatch<SetStateAction<IUser[]>> 
   isLoading: boolean
   setIsLoading?: Dispatch<SetStateAction<boolean>>
   handleGetUsers: () => void
@@ -66,6 +66,7 @@ const GlobalProvider: React.FC<GlobalProviderProps> = ({
     <GlobalContext.Provider
       value={{
         user: user,
+        setUser: setUser,
         handleGetUsers: handleGetUsers,
         isLoading: isLoading,
         setIsLoading: setIsLoading,
