@@ -11,10 +11,10 @@ import {
   Title,
   AddCardContainer,
 } from './styles'
-import UserCard from './UserCard'
+import { ListUsers } from './UsersList'
 
 export const Users: React.FC = () => {
-  const { isLoading, handleGetUsers, user, toggleModal, modalIsOpen } =
+  const { isLoading, handleGetUsers, users, toggleModal, modalIsOpen } =
     useGlobalContext()
   if (isLoading) {
     return (
@@ -24,7 +24,7 @@ export const Users: React.FC = () => {
     )
   }
 
-  if (user.length > 0) {
+  if (users.length > 0) {
     return modalIsOpen ? (
       <>
         <Container data-testid="users-container">
@@ -32,20 +32,9 @@ export const Users: React.FC = () => {
           <AddCardContainer onClick={toggleModal}>
             + Adicionar um novo usuário
           </AddCardContainer>
-          {user.map((user) => (
-            <UserCard
-              key={user.email}
-              name={user.name}
-              email={user.email}
-              phone={user.phone}
-              username={user.username}
-              street={user.address.street}
-              company={user.company.name}
-            />
-          ))}
+          <ListUsers />
         </Container>
         <Modal>
-          <CloseButton onClick={toggleModal}>X</CloseButton>
           <Form />
         </Modal>
       </>
@@ -55,17 +44,7 @@ export const Users: React.FC = () => {
         <AddCardContainer onClick={toggleModal}>
           + Adicionar um novo usuário
         </AddCardContainer>
-        {user.map((user) => (
-          <UserCard
-            key={user.email}
-            name={user.name}
-            email={user.email}
-            phone={user.phone}
-            username={user.username}
-            street={user.address.street}
-            company={user.company.name}
-          />
-        ))}
+        <ListUsers />
       </Container>
     )
   }

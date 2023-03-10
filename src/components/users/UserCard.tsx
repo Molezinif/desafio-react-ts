@@ -1,5 +1,6 @@
 import React from 'react'
 import { useGlobalContext } from '../../context'
+import { IUser } from '../../interfaces'
 import {
   ButtonOptions,
   UserCardContainer,
@@ -9,28 +10,23 @@ import {
 } from './styles'
 
 interface UserCardProps {
-  name: string
-  email: string
-  phone: string
-  username: string
-  street: string
-  company: string
+  user: IUser
 }
 
-export const UserCard: React.FC<UserCardProps> = ({
-  name,
-  email,
-  phone,
-  username,
-  street,
-  company,
-}) => {
+const UserCard: React.FC<UserCardProps> = ({ user }) => {
+  const {
+    name,
+    username,
+    email,
+    address: { street },
+    phone,
+    company: { name: companyName },
+  } = user
+
   const { toggleEditModal } = useGlobalContext()
-  const handleOnClick = () => {
-    console.log('click')
-  }
+
   return (
-    <UserCardContainer data-testid="UserCard" onClick={handleOnClick}>
+    <UserCardContainer data-testid="UserCard">
       <UserCardLeft>
         <UserCardText>
           <strong>Nome:</strong> {name}
@@ -42,7 +38,6 @@ export const UserCard: React.FC<UserCardProps> = ({
           <strong>Celular:</strong> {phone}
         </UserCardText>
       </UserCardLeft>
-
       <UserCardRight>
         <UserCardText>
           <strong>Username:</strong> {username}
@@ -51,10 +46,16 @@ export const UserCard: React.FC<UserCardProps> = ({
           <strong>Rua:</strong> {street}
         </UserCardText>
         <UserCardText>
-          <strong>Empresa:</strong> {company}
+          <strong>Empresa:</strong> {companyName}
         </UserCardText>
       </UserCardRight>
-      <ButtonOptions onClick={toggleEditModal}>editar</ButtonOptions>
+      <ButtonOptions
+        onClick={() => {
+          toggleEditModal(user)
+        }}
+      >
+        editar
+      </ButtonOptions>
     </UserCardContainer>
   )
 }

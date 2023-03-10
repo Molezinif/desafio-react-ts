@@ -1,92 +1,112 @@
-import React from 'react'
+/* eslint-disable @typescript-eslint/no-empty-function */
+import React, { useCallback, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { useGlobalContext } from '../../context'
 import { IUser } from '../../interfaces'
 import api from '../../services'
-import { CloseButton } from '../Modal/styles'
-import { ButtonSubmit, StyledForm, StyledInput, StyledLabel } from './styles'
-
+import {
+  ButtonDelete,
+  ButtonSubmit,
+  StyledForm,
+  StyledInput,
+  StyledLabel,
+} from './styles'
 
 export const Form: React.FC = () => {
   const { register, handleSubmit, reset, setValue } = useForm<IUser>()
-  const { setUser, user, isEditing, toggleEditModal,toggleModal } = useGlobalContext()
+  const { setUsers, users, isEditing, toggleEditModal, toggleModal, userEdit } =
+    useGlobalContext()
 
-  async function handlePostUsers(data: IUser) {
-    try {
-      const response = await api.post('/users', data)
-      console.log(response.data)
-      setUser([...user, data])
-    } catch (error) {
-      console.error('error: ' + error)
-    }
-  }
-  
-  const addUser = (data: IUser, event: any) => {
-    event.preventDefault()
-    const newUser = { ...data, id: user.length + 1 }
-    console.log(newUser)
-    handlePostUsers(newUser)
-    reset()
-    toggleModal()
-  }
+  const handlePostUsers = useCallback(
+    async (data: IUser) => {
+      try {
+        const response = await api.post('/users', data)
+        console.log(response.data)
+        setUsers([...users, data])
+      } catch (error) {
+        console.error('error: ' + error)
+      }
+    },
+    [setUsers, users]
+  )
 
-  async function handlePatchUsers(data: IUser) {
-    try {
-      const response = await api.put(`/users/${data.id}`, data)
-      console.log(response.data)
-      setUser([...user,data])
-      
-    } catch (error) {
-      console.error('error: ' + error)
-    }
-  }
+  const addUser = useCallback(
+    async (data: IUser) => {
+      const newUser = { ...data, id: users.length + 1 }
+      console.log(newUser)
+      await handlePostUsers(newUser)
+      reset()
+      toggleModal()
+    },
+    [handlePostUsers, reset, toggleModal, users.length]
+  )
 
-  const editUser = (data: IUser) => {
-    handlePatchUsers(data)
-    toggleEditModal()
-    reset()
-  }
-/* 
+  const handlePatchUsers = useCallback(
+    async (data: IUser) => {
+      try {
+        const response = await api.patch(`/users/${data.id}`, data)
+        console.log(data.id)
+        console.log(response.data)
+        const updatedUsers = users.map((user) =>
+          user.id === data.id ? data : user
+        )
+        setUsers((users) => updatedUsers)
+      } catch (error) {
+        console.error('error: ' + error)
+      }
+    },
+    [setUsers, users]
+  )
+
+  const editUser = useCallback(
+    (data: IUser) => {
+      /* const updatedUsers = Array.from(user) */
+      handlePatchUsers(data)
+      toggleEditModal({} as IUser)
+      reset()
+    },
+    [handlePatchUsers, reset, toggleEditModal]
+  )
+
+  const handleDeleteUsers = useCallback(
+    async (data: IUser) => {
+      try {
+        const response = await api.delete(`/users/${data.id}`)
+        console.log(data.id)
+        console.log(response.data)
+        setUsers(users.filter((user) => user.id !== data.id))
+      } catch (error) {
+        console.error('error: ' + error)
+      }
+    },
+    [setUsers, users]
+  )
+
+  const deleteUser = useCallback(
+    (data: IUser) => {
+      handleDeleteUsers(data)
+      toggleEditModal({} as IUser)
+      reset()
+    },
+    [handleDeleteUsers, reset, toggleEditModal]
+  )
+
   useEffect(() => {
     if (isEditing) {
-      setValue('id', user[0].id)
-      setValue('name', user[0].name)
-      setValue('email', user[0].email)
-      setValue('phone', user[0].phone)
-      setValue('username', user[0].username)
-      setValue('address.street', user[0].address.street)
-      setValue('company.name', user[0].company.name)
+      setValue('id', userEdit.id)
+      setValue('name', userEdit.name)
+      setValue('email', userEdit.email)
+      setValue('phone', userEdit.phone)
+      setValue('username', userEdit.username)
+      setValue('address.street', userEdit.address.street)
+      setValue('company.name', userEdit.company.name)
     }
-  }, [isEditing, user, setValue]) */
+  }, [isEditing, userEdit, setValue])
 
-  return isEditing ? (
-    <StyledForm onSubmit={handleSubmit(editUser)}>
-      <CloseButton onClick={toggleEditModal}>X</CloseButton>
+  return (
+    <StyledForm onSubmit={handleSubmit(isEditing ? editUser : addUser)}>
       <StyledLabel>Nome:</StyledLabel>
       <StyledInput type="hidden" {...register('id')}></StyledInput>
-      <StyledInput type="text" {...register('name')} />
-      <StyledLabel>Email:</StyledLabel>
-      <StyledInput type="text" {...register('email')} />
-      <StyledLabel>Celular:</StyledLabel>
-      <StyledInput type="text" {...register('phone')} />
-      <StyledLabel>Username:</StyledLabel>
-      <StyledInput type="text" {...register('username')} />
-      <StyledLabel>Rua:</StyledLabel>
-      <StyledInput
-        type="text"
-        {...register('address.street')}
-      />
-      <StyledLabel>Empresa:</StyledLabel>
-      <StyledInput
-        type="text"
-        {...register('company.name')}
-      />
-      <ButtonSubmit>Salvar</ButtonSubmit>
-    </StyledForm>
-  ) : (
-    <StyledForm onSubmit={handleSubmit(addUser)}>
-      <CloseButton onClick={toggleModal}>X</CloseButton>
-      <StyledLabel>Nome:</StyledLabel>
       <StyledInput type="text" {...register('name')} />
       <StyledLabel>Email:</StyledLabel>
       <StyledInput type="text" {...register('email')} />
@@ -98,7 +118,12 @@ export const Form: React.FC = () => {
       <StyledInput type="text" {...register('address.street')} />
       <StyledLabel>Empresa:</StyledLabel>
       <StyledInput type="text" {...register('company.name')} />
-      <ButtonSubmit onSubmit={handleSubmit(addUser)}>Salvar</ButtonSubmit>
+      <ButtonSubmit>Salvar</ButtonSubmit>
+      {isEditing && (
+        <ButtonDelete onClick={() => deleteUser(userEdit)}>
+          Deletar
+        </ButtonDelete>
+      )}
     </StyledForm>
   )
 }

@@ -1,6 +1,8 @@
+import { IUser } from '../interfaces'
+
 export const mockProvider = {
-  user: [],
-  setUser: jest.fn(),
+  users: [],
+  setUsers: jest.fn(),
   handleGetUsers: jest.fn(),
   isLoading: false,
   setIsLoading: jest.fn(),
@@ -10,4 +12,6 @@ export const mockProvider = {
   isEditing: false,
   setIsEditing: jest.fn(),
   toggleEditModal: jest.fn(),
+  userEdit: {} as IUser,
+  setUserEdit: jest.fn(),
 }

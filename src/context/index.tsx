@@ -10,8 +10,8 @@ import React, {
 import { IUser } from '../interfaces'
 import api from '../services'
 export interface GlobalContextProps {
-  user: IUser[]
-  setUser: Dispatch<SetStateAction<IUser[]>> 
+  users: IUser[]
+  setUsers: Dispatch<SetStateAction<IUser[]>>
   isLoading: boolean
   setIsLoading: Dispatch<SetStateAction<boolean>>
   handleGetUsers: () => void
@@ -20,7 +20,9 @@ export interface GlobalContextProps {
   toggleModal: () => void
   isEditing: boolean
   setIsEditing: Dispatch<SetStateAction<boolean>>
-  toggleEditModal: () => void
+  toggleEditModal: (user: IUser) => void
+  userEdit: IUser
+  setUserEdit: Dispatch<SetStateAction<IUser>>
 }
 
 interface GlobalProviderProps {
@@ -28,7 +30,7 @@ interface GlobalProviderProps {
 }
 
 export const defaultValue = {
-  user: [] as IUser[],
+  users: [] as IUser[],
   isLoading: false,
   modalIsOpen: false,
 }
@@ -41,9 +43,10 @@ const GlobalProvider: React.FC<GlobalProviderProps> = ({
   children,
 }: GlobalProviderProps) => {
   const [isLoading, setIsLoading] = useState<boolean>(defaultValue.isLoading)
-  const [user, setUser] = useState<IUser[]>(defaultValue.user)
+  const [users, setUsers] = useState<IUser[]>(defaultValue.users)
   const [modalIsOpen, setModal] = useState<boolean>(defaultValue.modalIsOpen)
   const [isEditing, setIsEditing] = useState<boolean>(false)
+  const [userEdit, setUserEdit] = useState<IUser>({} as IUser)
 
   const handleGetUsers = useCallback(() => {
     setIsLoading(true)
@@ -56,7 +59,7 @@ const GlobalProvider: React.FC<GlobalProviderProps> = ({
   async function handleAPIGetUser() {
     try {
       const response = await api.get('/users')
-      setUser(response.data)
+      setUsers(response.data)
     } catch (error) {
       console.error('error: ' + error)
     }
@@ -66,25 +69,31 @@ const GlobalProvider: React.FC<GlobalProviderProps> = ({
     setModal(!modalIsOpen)
   }, [modalIsOpen])
 
-  const toggleEditModal = useCallback(() => {
-    toggleModal()
-    setIsEditing(!isEditing)
-  }, [isEditing, toggleModal])
+  const toggleEditModal = useCallback(
+    (user: IUser) => {
+      toggleModal()
+      setIsEditing(!isEditing)
+      setUserEdit(user)
+    },
+    [toggleModal, isEditing]
+  )
 
   return (
     <GlobalContext.Provider
       value={{
-        user: user,
-        setUser: setUser,
-        handleGetUsers: handleGetUsers,
-        isLoading: isLoading,
-        setIsLoading: setIsLoading,
-        toggleModal: toggleModal,
-        modalIsOpen: modalIsOpen,
-        setModal: setModal,
-        isEditing: isEditing,
-        setIsEditing: setIsEditing,
-        toggleEditModal: toggleEditModal,
+        users,
+        setUsers,
+        handleGetUsers,
+        isLoading,
+        setIsLoading,
+        toggleModal,
+        modalIsOpen,
+        setModal,
+        toggleEditModal,
+        userEdit,
+        setUserEdit,
+        isEditing,
+        setIsEditing,
       }}
     >
       {children}
