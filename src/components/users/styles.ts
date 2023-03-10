@@ -30,6 +30,20 @@ export const Button = styled.button`
   }
 `
 
+export const ButtonOptions = styled.button`
+  background: #48b4e0;
+  border-radius: 4px;
+  border: 2px solid #48b4e0;
+  color: white;
+  padding: 0.5em 0.7em;
+  font-weight: 400;
+  cursor: pointer;
+  &:hover {
+    background: #229aca;
+    border: 2px solid #229aca;
+  }
+`
+
 export const LoadingContainer = styled.div`
   display: grid;
   height: 100vh;

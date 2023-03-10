@@ -1,6 +1,7 @@
 import React from 'react'
+import { useGlobalContext } from '../../context'
 import {
-  Options,
+  ButtonOptions,
   UserCardContainer,
   UserCardLeft,
   UserCardRight,
@@ -14,7 +15,6 @@ interface UserCardProps {
   username: string
   street: string
   company: string
-  children?: React.ReactNode
 }
 
 export const UserCard: React.FC<UserCardProps> = ({
@@ -24,14 +24,13 @@ export const UserCard: React.FC<UserCardProps> = ({
   username,
   street,
   company,
-  children,
 }) => {
+  const { toggleEditModal } = useGlobalContext()
   const handleOnClick = () => {
     console.log('click')
   }
   return (
     <UserCardContainer data-testid="UserCard" onClick={handleOnClick}>
-      <Options>{children}</Options>
       <UserCardLeft>
         <UserCardText>
           <strong>Nome:</strong> {name}
@@ -55,6 +54,7 @@ export const UserCard: React.FC<UserCardProps> = ({
           <strong>Empresa:</strong> {company}
         </UserCardText>
       </UserCardRight>
+      <ButtonOptions onClick={toggleEditModal}>editar</ButtonOptions>
     </UserCardContainer>
   )
 }

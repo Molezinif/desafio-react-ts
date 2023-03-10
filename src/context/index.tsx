@@ -11,13 +11,16 @@ import { IUser } from '../interfaces'
 import api from '../services'
 export interface GlobalContextProps {
   user: IUser[]
-  setUser?: Dispatch<SetStateAction<IUser[]>> 
+  setUser: Dispatch<SetStateAction<IUser[]>> 
   isLoading: boolean
-  setIsLoading?: Dispatch<SetStateAction<boolean>>
+  setIsLoading: Dispatch<SetStateAction<boolean>>
   handleGetUsers: () => void
   modalIsOpen: boolean
-  setModal?: Dispatch<SetStateAction<boolean>>
+  setModal: Dispatch<SetStateAction<boolean>>
   toggleModal: () => void
+  isEditing: boolean
+  setIsEditing: Dispatch<SetStateAction<boolean>>
+  toggleEditModal: () => void
 }
 
 interface GlobalProviderProps {
@@ -40,6 +43,7 @@ const GlobalProvider: React.FC<GlobalProviderProps> = ({
   const [isLoading, setIsLoading] = useState<boolean>(defaultValue.isLoading)
   const [user, setUser] = useState<IUser[]>(defaultValue.user)
   const [modalIsOpen, setModal] = useState<boolean>(defaultValue.modalIsOpen)
+  const [isEditing, setIsEditing] = useState<boolean>(false)
 
   const handleGetUsers = useCallback(() => {
     setIsLoading(true)
@@ -62,6 +66,11 @@ const GlobalProvider: React.FC<GlobalProviderProps> = ({
     setModal(!modalIsOpen)
   }, [modalIsOpen])
 
+  const toggleEditModal = useCallback(() => {
+    toggleModal()
+    setIsEditing(!isEditing)
+  }, [isEditing, toggleModal])
+
   return (
     <GlobalContext.Provider
       value={{
@@ -72,6 +81,10 @@ const GlobalProvider: React.FC<GlobalProviderProps> = ({
         setIsLoading: setIsLoading,
         toggleModal: toggleModal,
         modalIsOpen: modalIsOpen,
+        setModal: setModal,
+        isEditing: isEditing,
+        setIsEditing: setIsEditing,
+        toggleEditModal: toggleEditModal,
       }}
     >
       {children}
