@@ -23,9 +23,9 @@
 - Ter testes funcionais utilizando **Jest** e **React Testing Library**
 
 ## Adicional: ##
--Fazer CRUD
--Requisições patch, post, put e delete com o axios,
--hook forms
+- Fazer CRUD
+- Requisições patch, post, put e delete com o axios,
+- hook forms
 
 ## Layout ##
 Tela inicial
