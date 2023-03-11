@@ -3,7 +3,6 @@ import { ClipLoader } from 'react-spinners'
 import { useGlobalContext } from '../../context'
 import { Form } from '../Form/Form'
 import Modal from '../Modal/Modal'
-import { CloseButton } from '../Modal/styles'
 import {
   Button,
   Container,
@@ -25,26 +24,18 @@ export const Users: React.FC = () => {
   }
 
   if (users.length > 0) {
-    return modalIsOpen ? (
-      <>
-        <Container data-testid="users-container">
-          <Title>Usuários:</Title>
-          <AddCardContainer onClick={toggleModal}>
-            + Adicionar um novo usuário
-          </AddCardContainer>
-          <ListUsers />
-        </Container>
-        <Modal>
-          <Form />
-        </Modal>
-      </>
-    ) : (
+    return (
       <Container data-testid="users-container">
         <Title>Usuários:</Title>
-        <AddCardContainer onClick={toggleModal}>
+        <AddCardContainer onClick={toggleModal} data-testid="add-user-button">
           + Adicionar um novo usuário
         </AddCardContainer>
         <ListUsers />
+        {modalIsOpen && (
+          <Modal>
+            <Form />
+          </Modal>
+        )}
       </Container>
     )
   }

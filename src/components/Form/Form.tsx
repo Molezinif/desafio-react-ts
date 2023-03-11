@@ -13,10 +13,17 @@ import {
 } from './styles'
 
 export const Form: React.FC = () => {
-  const { register, handleSubmit, reset, setValue } = useForm<IUser>()
+  const {
+    register,
+    handleSubmit,
+    reset,
+    setValue,
+    formState: { errors },
+  } = useForm<IUser>()
   const { setUsers, users, isEditing, toggleEditModal, toggleModal, userEdit } =
     useGlobalContext()
 
+  //Create User
   const handlePostUsers = useCallback(
     async (data: IUser) => {
       try {
@@ -41,16 +48,16 @@ export const Form: React.FC = () => {
     [handlePostUsers, reset, toggleModal, users.length]
   )
 
+  //Update User
   const handlePatchUsers = useCallback(
     async (data: IUser) => {
       try {
         const response = await api.patch(`/users/${data.id}`, data)
-        console.log(data.id)
         console.log(response.data)
         const updatedUsers = users.map((user) =>
           user.id === data.id ? data : user
         )
-        setUsers((users) => updatedUsers)
+        setUsers(() => updatedUsers)
       } catch (error) {
         console.error('error: ' + error)
       }
@@ -59,20 +66,19 @@ export const Form: React.FC = () => {
   )
 
   const editUser = useCallback(
-    (data: IUser) => {
-      /* const updatedUsers = Array.from(user) */
-      handlePatchUsers(data)
+    async (data: IUser) => {
+      await handlePatchUsers(data)
       toggleEditModal({} as IUser)
       reset()
     },
     [handlePatchUsers, reset, toggleEditModal]
   )
 
+  //Delete User
   const handleDeleteUsers = useCallback(
     async (data: IUser) => {
       try {
         const response = await api.delete(`/users/${data.id}`)
-        console.log(data.id)
         console.log(response.data)
         setUsers(users.filter((user) => user.id !== data.id))
       } catch (error) {
@@ -83,8 +89,8 @@ export const Form: React.FC = () => {
   )
 
   const deleteUser = useCallback(
-    (data: IUser) => {
-      handleDeleteUsers(data)
+    async (data: IUser) => {
+      await handleDeleteUsers(data)
       toggleEditModal({} as IUser)
       reset()
     },
@@ -104,10 +110,14 @@ export const Form: React.FC = () => {
   }, [isEditing, userEdit, setValue])
 
   return (
-    <StyledForm onSubmit={handleSubmit(isEditing ? editUser : addUser)}>
+    <StyledForm
+      onSubmit={handleSubmit(isEditing ? editUser : addUser)}
+      data-testid="form"
+    >
       <StyledLabel>Nome:</StyledLabel>
       <StyledInput type="hidden" {...register('id')}></StyledInput>
       <StyledInput type="text" {...register('name')} />
+      {errors.name && <span>Nome é obrigatório</span>}
       <StyledLabel>Email:</StyledLabel>
       <StyledInput type="text" {...register('email')} />
       <StyledLabel>Celular:</StyledLabel>

@@ -1,6 +1,6 @@
 import React from 'react'
 import { useGlobalContext } from '../../context'
-import { IUser } from '../../interfaces'
+import { UserCardProps } from '../../interfaces'
 import {
   ButtonOptions,
   UserCardContainer,
@@ -8,10 +8,6 @@ import {
   UserCardRight,
   UserCardText,
 } from './styles'
-
-interface UserCardProps {
-  user: IUser
-}
 
 const UserCard: React.FC<UserCardProps> = ({ user }) => {
   const {

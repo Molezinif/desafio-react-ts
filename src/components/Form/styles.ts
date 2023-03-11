@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { InputProps } from '../../interfaces'
 
 export const StyledForm = styled.form`
   background-color: white;
@@ -13,11 +14,11 @@ export const StyledLabel = styled.label`
   color: #333;
 `
 
-export const StyledInput = styled.input`
+export const StyledInput = styled.input<InputProps>`
   width: 100%;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
   padding: 10px;
-  border: 1px solid #ccc;
+  border: ${({ error }) => (error ? '1px solid red' : '1px solid #ccc')};
   border-radius: 5px;
 `
 
@@ -54,4 +55,9 @@ export const ButtonDelete = styled.button`
   &:hover {
     background-color: #fe3d3d;
   }
+`
+export const ErrorMessage = styled.span`
+  color: red;
+  margin-bottom: 10px;
+  font-size: 0.8rem;
 `

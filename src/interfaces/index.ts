@@ -1,3 +1,5 @@
+import { FieldErrors, Control, FieldError, FieldValues } from 'react-hook-form'
+
 interface IUser {
   id: number
   name: string
@@ -26,4 +28,34 @@ interface ICompany {
   bs?: string
 }
 
-export type { IUser, IAddress, ICompany }
+interface ModalProps {
+  children: React.ReactNode
+}
+
+interface UserCardProps {
+  user: IUser
+}
+
+interface CustomInputProps<T extends FieldValues, K extends keyof T> {
+  name: K
+  label: string
+  control: Control<T>
+  rules?: Record<string, unknown>
+  errors: Record<keyof T, FieldError>
+  placeholder?: string
+}
+
+interface InputProps {
+  error?: boolean
+}
+
+export type {
+  IUser,
+  IAddress,
+  ICompany,
+  ModalProps,
+  UserCardProps,
+  CustomInputProps,
+  InputProps,
+  FieldErrors,
+}
