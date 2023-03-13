@@ -2,11 +2,13 @@
 import React, { useCallback, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { useGlobalContext } from '../../context'
-import { IUser } from '../../interfaces'
+import { IFormErrors, IUser } from '../../interfaces'
 import api from '../../services'
 import {
+  ButtonContainer,
   ButtonDelete,
   ButtonSubmit,
+  ErrorMessage,
   StyledForm,
   StyledInput,
   StyledLabel,
@@ -19,7 +21,7 @@ export const Form: React.FC = () => {
     reset,
     setValue,
     formState: { errors },
-  } = useForm<IUser>()
+  } = useForm<IUser, IFormErrors>()
   const { setUsers, users, isEditing, toggleEditModal, toggleModal, userEdit } =
     useGlobalContext()
 
@@ -79,8 +81,10 @@ export const Form: React.FC = () => {
     async (data: IUser) => {
       try {
         const response = await api.delete(`/users/${data.id}`)
+
+        const updatedUsers = users.filter((user) => user.id !== data.id)
+        setUsers(() => updatedUsers)
         console.log(response.data)
-        setUsers(users.filter((user) => user.id !== data.id))
       } catch (error) {
         console.error('error: ' + error)
       }
@@ -116,24 +120,72 @@ export const Form: React.FC = () => {
     >
       <StyledLabel>Nome:</StyledLabel>
       <StyledInput type="hidden" {...register('id')}></StyledInput>
-      <StyledInput type="text" {...register('name')} />
-      {errors.name && <span>Nome é obrigatório</span>}
+      <StyledInput
+        type="text"
+        hasError={!!errors.name}
+        placeholder="Insira o nome"
+        {...register('name', { required: true })}
+      />
+      {errors.name && <ErrorMessage>Nome é obrigatório</ErrorMessage>}
       <StyledLabel>Email:</StyledLabel>
-      <StyledInput type="text" {...register('email')} />
+      <StyledInput
+        type="text"
+        hasError={!!errors.email}
+        placeholder="example@email.com"
+        {...register('email', {
+          required: true,
+          pattern: {
+            value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/i,
+            message: 'Email inválido',
+          },
+        })}
+      />
+      {errors.email && <ErrorMessage>Email invalido</ErrorMessage>}
       <StyledLabel>Celular:</StyledLabel>
-      <StyledInput type="text" {...register('phone')} />
+      <StyledInput
+        type="text"
+        placeholder="Insira o nome"
+        hasError={!!errors.phone}
+        {...register('phone', { required: true })}
+      />
+      {errors.phone && <ErrorMessage>Celular inválido</ErrorMessage>}
       <StyledLabel>Username:</StyledLabel>
-      <StyledInput type="text" {...register('username')} />
+      <StyledInput
+        type="text"
+        placeholder="Insira o celular"
+        hasError={!!errors.phone}
+        {...register('username', { required: true })}
+      />
+      {errors.username && <ErrorMessage>Nome de usuário inválido</ErrorMessage>}
       <StyledLabel>Rua:</StyledLabel>
-      <StyledInput type="text" {...register('address.street')} />
+      <StyledInput
+        type="text"
+        placeholder="Insira o usuário"
+        hasError={!!errors.username}
+        {...register('address.street', { required: true })}
+      />
+      {errors.address?.street && <ErrorMessage>Endereço inválido</ErrorMessage>}
       <StyledLabel>Empresa:</StyledLabel>
-      <StyledInput type="text" {...register('company.name')} />
-      <ButtonSubmit>Salvar</ButtonSubmit>
-      {isEditing && (
-        <ButtonDelete onClick={() => deleteUser(userEdit)}>
-          Deletar
-        </ButtonDelete>
+      <StyledInput
+        type="text"
+        placeholder="Insira a rua"
+        hasError={!!errors.company?.name}
+        {...register('company.name', { required: true })}
+      />
+      {errors.company?.name && (
+        <ErrorMessage>Insira o nome da empresa</ErrorMessage>
       )}
+      <ButtonContainer>
+        <ButtonSubmit>Salvar</ButtonSubmit>
+        {isEditing && (
+          <ButtonDelete
+            onClick={() => deleteUser(userEdit)}
+            data-testid="delete-button"
+          >
+            Deletar
+          </ButtonDelete>
+        )}
+      </ButtonContainer>
     </StyledForm>
   )
 }
